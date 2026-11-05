@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>게임 크리에이터 코딩 | 나의 피하기 게임 만들기</title>
+<style>
+
+:root{--bg:#f7f9fc;--paper:#fff;--ink:#202b45;--muted:#66748c;--line:#e5eaf3;--blue:#5478e8;--lavender:#f0edff;--mint:#e4f7ef;--sky:#e8f4ff;--pink:#fff0f3}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:Pretendard,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;color:var(--ink);line-height:1.65;font-size:16px}
+button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}
+header{position:relative;max-width:1100px;margin:30px auto 0;padding:54px 62px 58px;overflow:hidden;border:1px solid #e4e8f5;border-radius:28px;background:linear-gradient(115deg,#f1f5ff 4%,#edf7ff 56%,#f7f0ff 100%)}
+header:before{content:'';position:absolute;right:68px;top:38px;width:185px;height:185px;border-radius:38px;background:#fff9;transform:rotate(-12deg);box-shadow:0 16px 40px #7289b01a}header:after{content:'✦';position:absolute;right:122px;top:38px;color:#9186eb;font-size:108px;font-weight:400;line-height:1.5;transform:rotate(-13deg)}
+.eyebrow{display:inline-flex;align-items:center;padding:6px 13px;background:white;color:#5e6dad;border:1px solid #e4e8f5;border-radius:999px;font-size:13px;font-weight:750;letter-spacing:.02em}
+header h1{position:relative;z-index:1;font-size:clamp(31px,4.1vw,49px);font-weight:850;line-height:1.25;letter-spacing:-.05em;margin:22px 0 14px;max-width:720px}header p{position:relative;z-index:1;font-size:17px;color:#65738c;max-width:650px;margin:0;line-height:1.75}
+.wrap{max-width:1100px;margin:auto;padding:25px 18px 72px}.intro{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:22px}.pill{border-radius:999px;background:#fff;border:1px solid #e3e9f2;color:#65738d;padding:7px 14px;font-weight:700;font-size:13px}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.tab{min-height:114px;text-align:left;border:1.5px solid var(--line);border-radius:19px;background:#fff;color:var(--ink);padding:17px 18px;transition:.16s;position:relative}.tab:before{content:'LESSON 0' attr(data-tab);display:block;margin-bottom:8px;font-size:11px;letter-spacing:.12em;font-weight:850;color:#8a97ac}.tab strong{display:block;font-size:18px;font-weight:830;letter-spacing:-.04em;line-height:1.35}.tab small{display:block;color:#7e8aa1;font-size:12px;margin-top:4px}.tab:hover{transform:translateY(-2px);border-color:#cbd7f6;box-shadow:0 7px 20px #596b9910}.tab.active{background:#eef3ff;border-color:#93adef;box-shadow:inset 0 0 0 1px #bdcdf5}.tab.active:before{color:#5677d8}.tab.active strong{color:#3459ba}
+.tab:focus-visible,.btn:focus-visible,.upgrade:focus-within{outline:3px solid #9a8ef0;outline-offset:3px}.panel{display:none}.panel.active{display:block}
+.lead{background:#fff;border:1px solid var(--line);border-radius:24px;padding:29px 33px;margin:24px 0 30px}.lead h2{font-size:clamp(25px,3vw,33px);font-weight:850;letter-spacing:-.045em;line-height:1.4;margin:12px 0 8px}.lead p{font-size:16px;color:#64728a;margin:0}.tag{display:inline-block;padding:5px 12px;border-radius:999px;background:var(--lavender);color:#7367bc;font-size:13px;font-weight:800}.result{margin-top:20px;padding:14px 18px;border-radius:13px;background:#edf9f5;color:#347967;font-weight:750;font-size:15px}
+.section{margin:30px 0}.section h3{font-size:22px;font-weight:840;letter-spacing:-.04em;margin:0 0 15px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:22px}.card h4{margin:0 0 9px;font-size:18px;letter-spacing:-.025em}.card p{margin:7px 0;color:#657188}.step{display:flex;gap:13px;align-items:flex-start}.num{height:33px;flex:0 0 33px;display:grid;place-items:center;border-radius:11px;background:#e8efff;color:#4c6dcb;font-weight:850}.stepbody{flex:1}
+.btn{border:1px solid transparent;border-radius:11px;background:#5d7ee5;color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;font-size:14px;font-weight:800;line-height:1.5;transition:background .15s,transform .15s}.btn:hover{background:#496bcf;transform:translateY(-1px)}.btn.alt{background:#eef2ff;color:#4a65b5}.btn.alt:hover{background:#e1e9ff}.btn.secondary{background:#e0f4eb;color:#2c8568}.btn.secondary:hover{background:#cdefdf}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}.actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+.checklist label{display:flex;gap:10px;align-items:flex-start;background:#f8faff;border:1px solid #edf0f7;border-radius:12px;padding:12px 13px;margin:9px 0;cursor:pointer}.checklist label:has(input:checked){background:#edf8f1;border-color:#ccebdd}.checklist input,.upgrade input{accent-color:#5d7ee5;width:19px;height:19px;flex-shrink:0;margin-top:3px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.field label{display:block;font-size:14px;font-weight:800;margin:0 0 6px;color:#45536e}.field input,.field textarea,.field select{width:100%;padding:11px 12px;border:1px solid #dce4f0;border-radius:10px;background:#fbfcff;color:#25314b;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:#809bf1;box-shadow:0 0 0 3px #dce7ff}.field textarea{min-height:78px;resize:vertical}.full{grid-column:1/-1}
+.prompt{background:#f3f6fc;color:#34445f;border:1px solid #dfe7f5;padding:20px;border-radius:15px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;font-size:14px}.hint{font-size:13px;color:#8290a4}.notice{border-left:3px solid #8ca3e8;background:#f0f4ff;padding:15px 18px;border-radius:10px;color:#53627d}.upgrades{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.upgrade{display:flex;gap:9px;align-items:flex-start;border:1px solid #e4eaf3;background:#fff;border-radius:14px;padding:14px;cursor:pointer}.upgrade:has(input:checked){border-color:#9fafe8;background:#f1f5ff}.upgrade small{color:#8791a5}
+.playbox{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.game{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;touch-action:none;border-radius:18px;background:linear-gradient(165deg,#789bdd,#adc2f0 56%,#d1e5fa)}.game:before{content:'✧   ✦    ✧';position:absolute;top:15%;left:12%;color:#ffffffb8;font-size:25px;letter-spacing:18px}.game .hero{position:absolute;bottom:9%;left:calc(50% - 17px);font-size:34px;pointer-events:none;user-select:none;z-index:2}.game .rock{position:absolute;top:0;left:50%;font-size:29px;pointer-events:none;user-select:none;z-index:2}.game .gamehint{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;background:#344e84b5;padding:20px;font-size:20px;font-weight:850;z-index:3}.gamehud{display:flex;justify-content:space-between;gap:10px;background:#f3f6ff;border-radius:10px;padding:10px 13px;margin-bottom:10px;font-weight:800}.control{display:flex;gap:10px;margin-top:10px}.control button{flex:1}.feedback{background:#fafcff;border:1px dashed #cbd6ec;padding:15px;border-radius:14px}.footer{margin-top:45px;text-align:center;color:#8795a9;font-size:13px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:11px 18px;background:#324564;color:white;border-radius:11px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99}.toast.show{opacity:1}
+@media(max-width:800px){header{margin:14px 14px 0;padding:39px 30px}header:before,header:after{opacity:.35;right:15px}.tab{padding:15px 11px}.tab strong{font-size:16px}}
+@media(max-width:700px){header{padding:32px 23px;border-radius:22px}header:before,header:after{display:none}header h1{font-size:33px}header p{font-size:15px}.wrap{padding:19px 12px 60px}.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tab{min-height:104px}.lead{padding:22px 18px}.cards,.fields,.playbox{grid-template-columns:1fr}.upgrades{grid-template-columns:repeat(2,minmax(0,1fr))}.card{padding:17px}.actions .btn{flex:1 1 auto}}
+@media(max-width:380px){.upgrades{grid-template-columns:1fr}header h1{font-size:29px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+@media print{body{background:white}header,.tabs,.actions,.playbox,.footer,.checklist,.toast{display:none!important}.panel{display:none!important}.panel.active{display:block!important}.wrap{padding:0}.lead,.card{break-inside:avoid}.section{margin:12px 0}}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 15px}
+.section-head h3{margin:0}
+.save-btn{white-space:nowrap}
+.export-value{width:100%;padding:11px 12px;border:1px solid #dce4f0;border-radius:10px;background:#fbfcff;color:#25314b;min-height:46px;line-height:1.55;display:flex;align-items:center;white-space:pre-wrap;overflow-wrap:anywhere}
+.export-value.textarea{align-items:flex-start;min-height:96px}
+.export-value.empty{color:#96a0b3}
+@media(max-width:700px){.section-head{align-items:flex-start}.section-head .save-btn{width:100%;justify-content:center}}
+
+
+/* CREATOR LAB / 2026 clean pop redesign */
+:root{--bg:#f8f9fd;--paper:#fff;--ink:#17192f;--muted:#69718a;--line:#e8e8f1;--blue:#6158ed;--lavender:#f0edff;--mint:#e4f7ef;--sky:#e8f4ff;--pink:#fff0f3}
+body{background:radial-gradient(circle at 2% 18%,#eeeaff 0,transparent 25%),radial-gradient(circle at 92% 45%,#e9f7ff 0,transparent 22%),#f8f9fd;color:#17192f;font-size:16px;letter-spacing:-.012em}
+header{max-width:1160px;margin:24px auto 0;padding:0;min-height:380px;display:grid;grid-template-columns:1.17fr .83fr;align-items:stretch;border:0;border-radius:30px;background:#6559eb;color:#fff;box-shadow:0 18px 45px #5146b72b;isolation:isolate}
+header:before{content:'';inset:auto -100px -170px auto;right:-75px;bottom:-155px;width:400px;height:400px;border-radius:50%;background:#a89eff36;box-shadow:none;transform:none;opacity:1}header:after{display:none}
+.hero-content{padding:43px 28px 43px 58px;z-index:2;position:relative}
+.eyebrow{color:#ffffff;background:#ffffff20;border:1px solid #ffffff5a;font-weight:780;font-size:12px;padding:7px 13px;letter-spacing:.035em;backdrop-filter:blur(7px)}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#c9ff8b;box-shadow:0 0 0 3px #c9ff8b33;margin-right:5px}
+.hero-kicker{margin-top:30px;font-size:12px;font-weight:850;letter-spacing:.18em;color:#ceff8b}
+header h1{max-width:none;font-size:clamp(34px,4.35vw,56px);line-height:1.23;margin:13px 0 14px;letter-spacing:-.055em;color:#fff}
+.highlight-title{color:#d4ff91}
+header p{color:#f0edff;font-size:16px;line-height:1.8}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.hero-tags span{background:#ffffff21;border:1px solid #ffffff29;border-radius:999px;padding:7px 12px;font-weight:750;font-size:12px;color:white}
+.hero-art{position:relative;min-height:360px;display:grid;place-items:center;overflow:hidden}
+.hero-art:before{content:'';position:absolute;width:315px;height:315px;border-radius:50%;background:#8176fa;top:27px;right:38px;border:1px solid #a89fff65}
+.orbit{position:absolute;border:2px solid #dedaff55;border-radius:50%;transform:rotate(-25deg)}.orbit-one{width:380px;height:170px;right:-7px;top:112px}.orbit-two{width:260px;height:310px;right:59px;top:21px}
+.hero-console{width:240px;height:180px;background:#dcff9c;border:7px solid #26204f;border-radius:32px 32px 45px 45px;box-shadow:16px 18px 0 #30277555;transform:rotate(-10deg);position:relative;z-index:1;padding:25px 22px 14px;display:flex;gap:15px}
+.console-screen{width:140px;height:113px;background:#24264e;color:#d5fe99;border:5px solid #fff;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;box-shadow:inset 0 0 0 3px #5554a2}.console-screen .face{font-size:31px;line-height:1.4;color:#fff}.console-buttons{display:flex;flex-direction:column;gap:10px;justify-content:center}.console-buttons i{display:block;width:20px;height:20px;border-radius:50%;background:#fd98cc;border:3px solid #27214f}.console-buttons i:nth-child(2){background:#8edcff;margin-left:14px}.console-buttons i:nth-child(3){background:#fff}
+.floating{position:absolute;font-size:36px;color:#d9ff92;z-index:2}.f1{right:20%;top:25px;transform:rotate(14deg)}.f2{left:4%;bottom:32px;color:#ffb9dd}.f3{right:13%;bottom:34px;color:#a3e9ff}
+.wrap{max-width:1160px;padding:28px 18px 80px}.intro{gap:9px;margin-bottom:29px}.pill{background:white;border:1px solid #e8e9f2;color:#68708c;padding:8px 15px;font-size:12px;letter-spacing:.018em;box-shadow:0 3px 10px #1e255005}.pill b{color:#665ae8}
+.stage-title{display:flex;align-items:end;justify-content:space-between;margin:0 0 15px}.micro-label{color:#665ce9;font-size:11px;font-weight:900;letter-spacing:.14em}.stage-title h2{margin:1px 0 0;font-size:24px;font-weight:900;letter-spacing:-.045em}.stage-title h2 span{color:#6959ef}.stage-title p{font-size:13px;color:#878ca4;margin:0 0 4px}
+.tabs{gap:13px}.tab{min-height:127px;padding:18px;border:1px solid #e9eaf2;border-radius:21px;box-shadow:0 8px 21px #28304708;overflow:hidden}.tab:before{font-size:11px;letter-spacing:.09em;color:#817d98}.tab strong{font-size:20px;color:#1e2240;margin-top:5px}.tab small{font-size:12px;margin-top:7px;color:#7d8399}.tab:after{content:'↗';position:absolute;top:13px;right:15px;font-size:18px;color:#b8b5c9}.tab:nth-child(2){background:#f1f9ff}.tab:nth-child(3){background:#faf3ff}.tab:nth-child(4){background:#f3f9ee}.tab:hover{border-color:#ae9fff;transform:translateY(-3px);box-shadow:0 12px 25px #5b4cc019}.tab.active,.tab:nth-child(n).active{background:#f1efff;border-color:#8d7ef7;box-shadow:inset 0 0 0 1px #ad9fff,0 10px 28px #7f70dc16}.tab.active:after{content:'●';color:#6658ef;font-size:12px}.tab.active strong{color:#5447c6}.tab:focus-visible,.btn:focus-visible,.upgrade:focus-within{outline:3px solid #b0a0ff;outline-offset:3px}
+.lead{position:relative;overflow:hidden;background:#fff;border:1px solid #e8e8f1;border-radius:25px;padding:29px 34px;margin:25px 0 30px;box-shadow:0 8px 23px #2e336608}.lead:after{content:'✳';position:absolute;right:34px;top:6px;font-size:85px;font-weight:300;color:#e9e5ff;transform:rotate(15deg);pointer-events:none}.lead h2{font-size:clamp(25px,2.9vw,34px);color:#202045;margin:12px 0 7px}.lead p{color:#69728c}.tag{background:#f1eeff;color:#6557de;font-size:12px;letter-spacing:.015em}.result{background:#f1f8ff;color:#3563a1;border:1px solid #e3f0ff;border-radius:13px;font-size:14px;position:relative;z-index:1}
+.section{margin:32px 0}.section h3{color:#25234a;font-size:21px;letter-spacing:-.045em}.card{border-color:#e8e9f2;border-radius:21px;padding:23px;box-shadow:0 5px 19px #353d6606}.card h4{color:#272648}.card p{color:#70778d}.num{background:#eeecff;color:#6255d9;border-radius:12px}
+.btn{background:#6256e9;border-radius:12px;padding:11px 17px;box-shadow:0 3px 8px #5d50dc12}.btn:hover{background:#5144d9}.btn.alt{background:#f1efff;color:#5e51d6}.btn.alt:hover{background:#e9e4ff}.btn.secondary{background:#e6f7e9;color:#287b55}.btn.secondary:hover{background:#d1f0db}.save-btn{background:#edebff!important;color:#544bd0!important}
+.checklist label{background:#f9f9fe;border:1px solid #e8e9f4;border-radius:13px}.checklist label:has(input:checked){background:#eff9f0;border-color:#c4e6ca}.checklist input,.upgrade input{accent-color:#6658e9}
+.field label{color:#424265;font-weight:850}.field input,.field textarea,.field select{background:#fafafe;border-color:#e3e4ef;border-radius:12px;padding:12px 13px}.field input:focus,.field textarea:focus,.field select:focus{border-color:#8f83ef;box-shadow:0 0 0 3px #eeeaff}
+.prompt{background:#f6f5ff;color:#393358;border-color:#e6e1ff;border-radius:17px}.notice{background:#f5f3ff;color:#655c89;border-left-color:#9082f1}.upgrade{border-color:#e5e6f1;border-radius:16px;transition:transform .15s,background .15s}.upgrade:hover{transform:translateY(-2px)}.upgrade:has(input:checked){background:#f1eeff;border-color:#aaa0f0}.upgrade small{color:#7b8092}.game{background:linear-gradient(145deg,#544dd4 3%,#8e86f0 48%,#cbd9ff 100%);box-shadow:0 10px 26px #554cb12a}.gamehud{background:#f1efff;color:#554cbd}.toast{background:#2e285d;color:white;border-radius:13px;box-shadow:0 10px 32px #201c5140}.footer{color:#999bb0}
+@media(max-width:850px){header{margin:15px 15px 0;grid-template-columns:1fr .58fr}.hero-content{padding:38px 12px 38px 35px}.hero-console{transform:rotate(-10deg) scale(.73)}.hero-art:before{right:-75px}.tab strong{font-size:17px}}
+@media(max-width:700px){header{display:block;min-height:0;margin:12px 12px 0;border-radius:24px}.hero-content{padding:32px 23px 35px}.hero-kicker{margin-top:25px}header h1{font-size:36px}header p{font-size:14px}.hero-art{display:none}.wrap{padding:20px 12px 65px}.tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tab{min-height:115px;padding:15px}.tab strong{font-size:16px}.tab small{font-size:11px}.stage-title h2{font-size:21px}.lead{padding:24px 19px}.lead:after{right:8px;font-size:65px}.cards,.fields,.playbox{grid-template-columns:1fr}.upgrades{grid-template-columns:repeat(2,minmax(0,1fr))}.card{padding:18px}.actions .btn{flex:1 1 auto}.section-head .save-btn{width:auto}}
+@media(max-width:390px){header h1{font-size:32px}.stage-title p{display:none}.section-head .save-btn{width:100%}.upgrades{grid-template-columns:1fr}}
+@media print{header,.stage-title,.hero-art{display:none!important}}
+
+</style>
+</head>
+<body>
+<header><div class="hero-content"><div class="eyebrow"><span class="live-dot"></span> 문현초 6학년 · CREATOR LAB</div><div class="hero-kicker">MAKE IT. PLAY IT. SHARE IT.</div><h1>상상한 게임,<br/><span class="highlight-title">직접 만들어봐!</span></h1><p>엔트리로 시작해서 AI 웹 게임까지.<br/>아이디어 하나로 게임 크리에이터가 되는 4번의 미션 ✨</p><div class="hero-tags"><span>🎮 SW 코딩</span><span>✦ AI 바이브 코딩</span><span>⚡ 4 STAGES</span></div></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-console"><div class="console-screen"><span>★</span><span class="face">•ᴗ•</span><span>✦</span></div><div class="console-buttons"><i></i><i></i><i></i></div></div><div class="floating f1">✦</div><div class="floating f2">★</div><div class="floating f3">✳</div></div></header>
+<main class="wrap"><div class="intro"><span class="pill"><b>04</b> STAGES</span><span class="pill">⏱ 40 MIN / STAGE</span><span class="pill">✨ 초보 크리에이터 환영</span></div><div class="stage-title"><div><span class="micro-label">YOUR LEARNING PATH</span><h2>오늘은 어떤 미션? <span>↗</span></h2></div><p>차시를 눌러 시작해요</p></div>
+<nav aria-label="차시 선택" class="tabs"><button class="tab active" data-tab="1"><strong>🛸 1차시</strong><small>게임의 뼈대 만들기</small></button><button class="tab" data-tab="2"><strong>🎯 2차시</strong><small>나만의 게임 완성</small></button><button class="tab" data-tab="3"><strong>🤖 3차시</strong><small>AI로 웹 게임 만들기</small></button><button class="tab" data-tab="4"><strong>🏆 4차시</strong><small>업그레이드 &amp; 공유</small></button></nav>
+<section class="panel active" id="panel1"><div class="lead"><span class="tag">v0.1 · 엔트리</span><h2>1차시 · 게임은 어떻게 움직일까?</h2><p>주인공을 움직이고 떨어지는 장애물을 피해 보세요.</p><div class="result">🎁 오늘의 결과물: 터치로 움직이는 주인공 + 떨어지는 운석 + 게임 오버!</div></div>
+<div class="section"><h3>🚀 차근차근 따라 해요</h3><div class="cards"><div class="card step"><span class="num">1</span><div class="stepbody"><h4>엔트리 열기</h4><p>새 작품을 만들고, 주인공과 운석 오브젝트를 준비해요.</p><a class="btn" href="https://playentry.org/" rel="noopener" target="_blank">엔트리 열기 ↗</a></div></div><div class="card step"><span class="num">2</span><div class="stepbody"><h4>주인공 움직이기</h4><p><b>시작하기</b> → x: 0, y: -100. <b>마우스를 클릭했을 때</b> → 마우스 x 좌표로 이동하게 해요.</p></div></div><div class="card step"><span class="num">3</span><div class="stepbody"><h4>운석 떨어뜨리기</h4><p><b>계속 반복하기</b> 안에서 운석을 위쪽 무작위 위치로 옮기고, 아래쪽 벽까지 y를 -5씩 바꿔요.</p></div></div><div class="card step"><span class="num">4</span><div class="stepbody"><h4>닿으면 게임 오버!</h4><p>주인공이 운석에 닿으면 “아야!”라고 말한 뒤 모든 코드를 멈춰요.</p></div></div></div></div>
+<div class="section"><h3>🕹️ 먼저 체험해 보기</h3><div class="card playbox"><div><div class="gamehud"><span>점수 <span id="score">0</span></span><span id="status">준비!</span></div><div class="game" id="game"><div class="hero" id="hero">🚀</div><div class="rock" id="rock">☄️</div><div class="gamehint" id="gamehint">시작 버튼을 눌러요!<br/>← → 또는 터치로 이동</div></div><div class="control"><button class="btn alt" id="left">⬅️ 왼쪽</button><button class="btn alt" id="right">오른쪽 ➡️</button></div><div class="actions"><button class="btn secondary" id="startGame">▶️ 시작 / 다시 하기</button></div></div><div><h4>🔎 게임 구조 탐정</h4><p>작은 게임을 직접 해보면서 게임의 5가지 재료를 찾아보세요.</p><p><b>오브젝트</b> 등장인물 · <b>배경</b> 무대 · <b>이벤트</b> 시작 신호 · <b>움직임</b> 위치 바꾸기 · <b>조건</b> 닿았는지 확인하기</p><div class="notice">이 체험 게임은 연습용이에요. 실제 과제는 <b>엔트리</b>에서 만들어요.</div></div></div></div>
+<div class="section"><div class="section-head"><h3>✏️ 게임 구조 탐정 카드</h3><button class="btn alt save-btn no-export" data-export-name="1차시_게임구조탐정카드.png" data-export-target="sheet1" type="button">🖼️ PNG 다운로드</button></div><div class="card fields" id="sheet1"><div class="field"><label for="p1objects">① 오브젝트</label><input data-save="" id="p1objects" placeholder="예: 주인공, 운석"/></div><div class="field"><label for="p1scene">② 배경</label><input data-save="" id="p1scene" placeholder="예: 우주"/></div><div class="field"><label for="p1event">③ 이벤트</label><input data-save="" id="p1event" placeholder="예: 시작 버튼 클릭"/></div><div class="field"><label for="p1move">④ 움직임</label><input data-save="" id="p1move" placeholder="예: 운석이 아래로 떨어짐"/></div><div class="field"><label for="p1if">⑤ 조건</label><input data-save="" id="p1if" placeholder="예: 운석에 닿으면 게임 끝"/></div><div class="field"><label for="p1ai">⑥ AI가 한 일</label><input data-save="" id="p1ai" placeholder="예: 시작을 말해줌"/></div></div></div>
+<div class="section card"><h3>✅ 오늘의 미션 완료 확인</h3><div class="checklist"><label><input data-save="" type="checkbox"/> 주인공이 클릭한 곳으로 움직여요.</label><label><input data-save="" type="checkbox"/> 운석이 위에서 떨어져요.</label><label><input data-save="" type="checkbox"/> 운석에 닿으면 게임이 멈춰요.</label><label><input data-save="" type="checkbox"/> AI가 안내 말을 해요.</label></div></div></section>
+<section class="panel" id="panel2"><div class="lead"><span class="tag">v1.0 · 엔트리</span><h2>2차시 · 나만의 ‘○○ 피해라!’ 만들기</h2><p>어떤 것을 피할지 정하고 점수, 복제본, 게임 오버 신호를 넣어요.</p><div class="result">🎁 오늘의 결과물: 엔트리 완성 게임 + 게임 기획 카드</div></div><div class="section"><h3>💡 어떤 게임을 만들까?</h3><div class="cards"><div class="card"><h4>💩 똥 피해라!</h4><p>하늘에서 떨어지는 똥 피하기</p></div><div class="card"><h4>🦖 공룡 발자국 피해라!</h4><p>쿵쿵 떨어지는 발자국 피하기</p></div><div class="card"><h4>🌫️ 미세먼지 피해라!</h4><p>먼지 구름을 피해 살아남기</p></div><div class="card"><h4>📚 숙제 폭탄 피해라!</h4><p>숙제 폭탄을 피하고 간식 얻기</p></div></div></div>
+<div class="section"><div class="section-head"><h3>📝 나의 게임 기획 카드</h3><button class="btn alt save-btn no-export" data-export-name="2차시_나의게임기획카드.png" data-export-target="sheet2" type="button">🖼️ PNG 다운로드</button></div><div class="card fields" id="sheet2"><div class="field"><label for="gameName">① 게임 이름</label><input data-save="" id="gameName" placeholder="예: 운석 피해라!"/></div><div class="field"><label for="character">② 주인공</label><input data-save="" id="character" placeholder="예: 우주 탐험가"/></div><div class="field"><label for="obstacle">③ 피할 것</label><input data-save="" id="obstacle" placeholder="예: 운석"/></div><div class="field"><label for="background">④ 배경</label><input data-save="" id="background" placeholder="예: 우주"/></div><div class="field"><label for="scoreRule">⑤ 점수 규칙</label><input data-save="" id="scoreRule" value="장애물을 하나 피할 때마다 1점"/></div><div class="field"><label for="endRule">⑥ 게임이 끝나는 때</label><input data-save="" id="endRule" value="장애물에 닿으면 게임 오버"/></div><div class="field"><label for="aiSpeech">⑦ AI가 해줄 말</label><input data-save="" id="aiSpeech" placeholder="예: 준비! 시작!"/></div><div class="field"><label for="mood">⑧ 게임 분위기</label><select data-save="" id="mood"><option value="귀엽고 신나는">귀엽고 신나는</option><option value="우주 모험 같은">우주 모험 같은</option><option value="웃기고 재미있는">웃기고 재미있는</option><option value="긴장감 넘치는">긴장감 넘치는</option></select></div></div></div><div class="section"><h3>🧩 오늘의 새 무기 3가지</h3><div class="cards"><div class="card"><h4>📦 변수 = 기억 상자</h4><p>‘점수’ 변수를 만들어요. 시작할 때 0, 장애물 하나를 피할 때마다 +1!</p></div><div class="card"><h4>🪄 복제본 = 도장 찍기</h4><p>장애물 원본은 숨기고 1초마다 복제본을 만들어요. 복제본이 떨어져요.</p></div><div class="card"><h4>📨 신호 = 쪽지 보내기</h4><p>장애물에 닿으면 ‘게임오버’ 신호를 보내요. 주인공이 받고 멈춰요.</p></div><div class="card"><h4>🎮 엔트리로 만들기</h4><p>기획 카드에 쓴 게임을 직접 만들어요. 만들다가 막히면 친구와 함께 해결해요.</p><a class="btn" href="https://playentry.org/" rel="noopener" target="_blank">엔트리 열기 ↗</a></div></div></div><div class="section card"><h3>✅ 오늘의 미션 완료 확인</h3><div class="checklist"><label><input data-save="" type="checkbox"/> 게임 기획 카드 8칸을 채웠어요.</label><label><input data-save="" type="checkbox"/> 점수 변수를 만들었어요.</label><label><input data-save="" type="checkbox"/> 복제본 장애물이 계속 떨어져요.</label><label><input data-save="" type="checkbox"/> 게임 오버 신호가 작동해요.</label></div></div></section>
+<section class="panel" id="panel3"><div class="lead"><span class="tag">v2.0 · 캔바 AI</span><h2>3차시 · 말로 웹 게임 만들기!</h2><p>엔트리에서 만든 게임을 AI가 이해할 수 있는 문장으로 설명해요.</p><div class="result">🎁 오늘의 결과물: 캔바 AI 웹 게임 + 나만의 프롬프트</div></div><div class="section"><h3>🪄 프롬프트란?</h3><div class="card"><p><b>프롬프트</b>는 AI에게 보내는 부탁 문장이에요. 무엇을 만들지, 어떻게 움직일지, 어떤 규칙인지 자세하게 알려주면 좋아요!</p><div class="notice">💡 예: “피하기 게임을 만들어줘”보다 “우주에서 운석을 피하는 게임을 만들어줘. 방향키로 움직이고, 운석을 피하면 1점을 줘”가 더 좋아요.</div></div></div><div class="section"><div class="section-head"><h3>✍️ 나의 게임 설계도 → 프롬프트</h3><button class="btn alt save-btn no-export" data-export-name="3차시_나의게임설계도.png" data-export-target="sheet3" type="button">🖼️ PNG 다운로드</button></div>
+<p class="hint">활동지의 ①~⑥을 차례대로 작성해요. 2차시 기획 카드의 게임 이름·주인공·장애물·배경도 참고해요.</p>
+<div class="card fields" id="sheet3">
+<div class="field"><label for="planGame">① 게임 이름 · 무슨 게임?</label><input data-save="" id="planGame" placeholder="예: 운석 피해라! — 우주 탐험가가 우주에서 운석을 피하는 게임"/></div>
+<div class="field"><label for="movement">② 움직이는 법</label><select data-save="" id="movement"><option>손가락 터치와 키보드 방향키로 주인공을 움직여요</option><option>화면의 왼쪽·오른쪽 버튼으로 주인공을 움직여요</option><option>마우스와 키보드 방향키로 주인공을 움직여요</option></select></div>
+<div class="field"><label for="fallRule">③ 장애물 규칙</label><input data-save="" id="fallRule" placeholder="언제, 어디서, 얼마나 빠르게?" value="장애물이 위에서 무작위 위치로 계속 떨어져요"/></div>
+<div class="field"><label for="scoreEnd">④ 점수 규칙 · 끝나는 때</label><input data-save="" id="scoreEnd" placeholder="예: 장애물을 피하면 1점, 닿으면 게임 오버"/></div>
+<div class="field"><label for="designMood">⑤ 디자인 (색·분위기)</label><input data-save="" id="designMood" placeholder="예: 파란색과 보라색, 신나는 우주 모험 분위기"/></div>
+<div class="field"><label for="extra">⑥ 추가 조건</label><input data-save="" id="extra" placeholder="예: 큰 글씨, 쉬운 조작, 다시 하기 버튼" value="터치와 키보드 지원, 큰 글씨, 쉬운 조작, 다시 하기 버튼"/></div>
+</div>
+<div class="actions"><button class="btn" id="makePrompt">✨ 내 프롬프트 만들기</button><button class="btn alt" data-copy="prompt3">📋 프롬프트 복사</button><a class="btn secondary" href="https://www.canva.com/" rel="noopener" target="_blank">캔바 열기 ↗</a></div>
+<div aria-live="polite" class="prompt" id="prompt3">위의 ①~⑥을 작성한 뒤 ‘내 프롬프트 만들기’를 눌러요.
+
+‘○○라는 웹 게임을 만들어줘.
+1. ...
+2. ...
+3. ...
+4. ...
+5. ...
+6. ...’</div>
+<p class="hint">여섯 항목이 번호 순서대로 하나의 프롬프트로 완성돼요. 복사한 문장을 캔바 AI에 그대로 붙여 넣으세요.</p>
+<p class="hint">캔바 AI 사용은 학교·선생님이 안내한 계정과 방법을 따라요. 캔바에서 제공되는 기능은 계정에 따라 다를 수 있어요.</p></div><div class="section card"><h3>✅ 오늘의 미션 완료 확인</h3><div class="checklist"><label><input data-save="" type="checkbox"/> 엔트리 게임 규칙을 말로 설명했어요.</label><label><input data-save="" type="checkbox"/> 프롬프트를 만들고 복사했어요.</label><label><input data-save="" type="checkbox"/> 캔바 AI에서 웹 게임을 만들었어요.</label><label><input data-save="" type="checkbox"/> 직접 플레이하고 고칠 점을 찾았어요.</label></div></div></section>
+<section class="panel" id="panel4"><div class="lead"><span class="tag">v3.0 · 캔바 AI</span><h2>4차시 · 내 게임을 업그레이드하자!</h2><p>새 기능을 2개 더하고 친구들과 플레이하며 의견을 나눠요.</p><div class="result">🎁 오늘의 결과물: 업그레이드 웹 게임 + 친구 피드백 카드</div></div><div class="section"><h3>🛠️ 업그레이드 메뉴판 <span class="hint">(2개 선택)</span></h3><div class="upgrades" id="upgrades"><label class="upgrade"><input type="checkbox" value="시간이 지날수록 장애물이 빨라지는 난이도 기능"/><span>🚀 <b>난이도</b><br/><small>점점 빨라지기</small></span></label><label class="upgrade"><input type="checkbox" value="30초 타이머와 끝까지 버티면 성공하는 기능"/><span>⏱️ <b>시간</b><br/><small>30초 버티기</small></span></label><label class="upgrade"><input type="checkbox" value="하트 3개, 닿으면 하트 하나 감소, 하트 0개면 게임 오버"/><span>❤️ <b>생명</b><br/><small>하트 3개</small></span></label><label class="upgrade"><input type="checkbox" value="별을 먹으면 5점을 얻는 아이템"/><span>⭐ <b>아이템</b><br/><small>별 먹고 +5점</small></span></label><label class="upgrade"><input type="checkbox" value="충돌 효과음과 성공 축하 효과"/><span>🎉 <b>효과</b><br/><small>소리와 폭죽</small></span></label><label class="upgrade"><input type="checkbox" value="게임을 다시 열어도 남는 최고 점수 저장 기능"/><span>🏅 <b>최고 기록</b><br/><small>최고 점수 저장</small></span></label></div><div class="actions"><button class="btn" id="makeUpgrade">✨ 업그레이드 문장 만들기</button><button class="btn alt" data-copy="prompt4">📋 문장 복사</button><button class="btn secondary" type="button" data-copy="backupPrompt4">📋 예비 v3.0 프롬프트 복사</button><a class="btn secondary" href="https://www.canva.com/" rel="noopener" target="_blank">캔바 열기 ↗</a></div><div id="backupPrompt4" hidden>&#x27;운석 피해라!&#x27;라는 웹 게임을 만들어줘. 우주에서 로봇이 떨어지는 운석을 피하는 게임이야.
+1. 첫 화면에 큰 제목, &#x27;최고 기록: ○점&#x27;, &#x27;시작하기&#x27; 버튼을 보여줘.
+2. 로봇은 화면 아래에 있고, 화면 터치, 아래쪽 왼쪽·오른쪽 큰 버튼(누르고 있으면 계속 이동), 키보드 화살표 키로 움직여.
+3. 운석은 1초마다 위쪽 무작위 위치에서 떨어지고, 시간이 지날수록 조금씩 빨라져.
+4. 운석을 피하면 1점, 가끔 떨어지는 별을 먹으면 5점. 점수·하트·최고 기록을 화면 위에 카드처럼 보여줘.
+5. 하트는 3개. 운석에 닿으면 하트가 1개 줄고 화면이 살짝 흔들려. 하트가 0개면 게임 오버.
+6. 게임 오버 화면에 최종 점수와 &#x27;다시 하기&#x27; 버튼, 기록을 넘으면 &#x27;최고 기록 갱신!&#x27;을 보여줘.
+7. 최고 점수는 저장해서 껐다 켜도 남게 해줘. 다시 하기를 누르면 점수와 하트는 처음으로 돌아가.
+8. 어두운 우주 배경, 반짝이는 별, 귀엽고 신나는 분위기. 서피스 가로 화면에서 스크롤 없이, 큰 글씨, 모든 글은 한글로.</div><div aria-live="polite" class="prompt" id="prompt4">기능 2개를 고르고 ‘업그레이드 문장 만들기’를 눌러요.</div><p class="hint">AI에게는 기능을 <b>한 번에 하나씩</b> 부탁하고, 플레이해서 확인한 뒤 다음 기능을 추가해요.</p></div><div class="section"><h3>🪲 버그가 있다면 이렇게 말해요</h3><div class="card"><p><b>무엇이</b> → <b>어떻게 잘못됐고</b> → <b>어떻게 되면 좋은지</b> 차례로 말하기!</p><div class="notice">“다시 하기를 누르면 점수가 0으로 돌아가지 않아. 다시 하기를 누를 때 점수와 하트를 처음 상태로 돌려줘.”</div></div></div><div class="section"><div class="section-head"><h3>💬 친구 게임 피드백 카드</h3><button class="btn alt save-btn no-export" data-export-name="4차시_친구게임피드백카드.png" data-export-target="sheet4" type="button">🖼️ PNG 다운로드</button></div><div class="card fields" id="sheet4"><div class="field"><label for="friendGame">플레이한 게임 이름 / 친구</label><input data-save="" id="friendGame" placeholder="예: 별 피하기 / 김○○"/></div><div class="field"><label for="starsFun">재미 점수</label><select data-save="" id="starsFun"><option>⭐⭐⭐⭐⭐</option><option>⭐⭐⭐⭐</option><option>⭐⭐⭐</option><option>⭐⭐</option><option>⭐</option></select></div><div class="field"><label for="starsControl">조작 점수</label><select data-save="" id="starsControl"><option>⭐⭐⭐⭐⭐</option><option>⭐⭐⭐⭐</option><option>⭐⭐⭐</option><option>⭐⭐</option><option>⭐</option></select></div><div class="field"><label for="starsDesign">디자인 점수</label><select data-save="" id="starsDesign"><option>⭐⭐⭐⭐⭐</option><option>⭐⭐⭐⭐</option><option>⭐⭐⭐</option><option>⭐⭐</option><option>⭐</option></select></div><div class="field full"><label for="compliment">👍 칭찬 한 가지</label><textarea data-save="" id="compliment" placeholder="어떤 점이 재미있었나요?"></textarea></div><div class="field full"><label for="suggestion">💡 제안 한 가지</label><textarea data-save="" id="suggestion" placeholder="어떻게 하면 더 좋아질까요?"></textarea></div><div class="field full"><label for="reflection">🌱 내 게임에 추가하고 싶은 점</label><textarea data-save="" id="reflection" placeholder="친구의 의견을 듣고 생각해 보아요."></textarea></div></div></div><div class="section card"><h3>✅ 오늘의 미션 완료 확인</h3><div class="checklist"><label><input data-save="" type="checkbox"/> 새 기능 2개를 추가했어요.</label><label><input data-save="" type="checkbox"/> 게임을 다시 플레이해서 확인했어요.</label><label><input data-save="" type="checkbox"/> 선생님 안내에 따라 공유했어요.</label><label><input data-save="" type="checkbox"/> 친구 3명의 게임을 해 보고 피드백을 주었어요.</label></div></div></section>
+<div class="actions" style="justify-content:center;margin-top:26px"><button class="btn alt" id="prev">⬅️ 이전 차시</button><button class="btn" id="next">다음 차시 ➡️</button></div><p class="hint" style="text-align:center">✏️ 입력한 내용과 체크한 미션은 지금 사용하는 브라우저에 자동 저장돼요. 다른 기기에서는 보이지 않아요.</p><footer class="footer">작은 아이디어가 멋진 게임이 되는 4차시 · 게임 크리에이터 코딩</footer></main><div class="toast" id="toast" role="status"></div>
+<script>
+(function(){'use strict';let current=1;const $=id=>document.getElementById(id);const message=t=>{const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>e.classList.remove('show'),2200)};function tab(n){current=Math.max(1,Math.min(4,n));document.querySelectorAll('.tab').forEach(x=>{const b=+x.dataset.tab===current;x.classList.toggle('active',b);x.setAttribute('aria-selected',b)});document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id==='panel'+current));$('prev').disabled=current===1;$('next').disabled=current===4;window.scrollTo({top:0,behavior:'smooth'});}document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>tab(+b.dataset.tab)));$('prev').onclick=()=>tab(current-1);$('next').onclick=()=>tab(current+1);document.querySelectorAll('[data-save]').forEach((el,i)=>{const key='gamecreator-v1-'+(el.id||'checkbox-'+i);try{const saved=localStorage.getItem(key);if(saved!==null){if(el.type==='checkbox')el.checked=saved==='true';else el.value=saved}}catch(e){}el.addEventListener('input',()=>{try{localStorage.setItem(key,el.type==='checkbox'?String(el.checked):el.value)}catch(e){}})});
+function v(id,fallback){return ($(id)?.value||'').trim()||fallback}
+function buildPrompt(){
+const stage2Name=v('gameName','운석 피해라!');
+const nameAndStory=v('planGame',`${stage2Name} — ${v('character','주인공')}이(가) ${v('background','게임 배경')}에서 ${v('obstacle','장애물')}을 피하는 게임`);
+const title=nameAndStory.split(/[—–:：]/)[0].trim()||stage2Name;
+const rules=[
+`게임 이름과 내용: ${nameAndStory}.`,
+`움직이는 법: ${v('movement','터치와 키보드 방향키로 움직여요')}.`,
+`장애물 규칙: ${v('fallRule','장애물이 위에서 계속 떨어져요')}.`,
+`점수 규칙과 게임 종료: ${v('scoreEnd',`${v('scoreRule','장애물을 피하면 1점')}, ${v('endRule','장애물에 닿으면 게임 오버')}`)}.`,
+`디자인: ${v('designMood',`${v('themeColor','파란색과 보라색')}의 ${v('mood','귀엽고 신나는')} 분위기`)}.`,
+`추가 조건: ${v('extra','큰 글씨, 쉬운 조작, 다시 하기 버튼')}.`
+];
+$('prompt3').textContent=`'${title}'라는 웹 게임을 만들어줘.\n${rules.map((r,i)=>`${i+1}. ${r.replace(/\.\.$/,'.')}`).join('\n')}`;
+message('①~⑥을 모아 프롬프트를 완성했어요!');
+}
+$('makePrompt').onclick=buildPrompt;
+const upgrades=$('upgrades');upgrades.querySelectorAll('input').forEach(c=>c.addEventListener('change',()=>{let checked=[...upgrades.querySelectorAll('input:checked')];if(checked.length>2){c.checked=false;message('기능은 2개만 골라요!')}}));$('makeUpgrade').onclick=()=>{const choices=[...upgrades.querySelectorAll('input:checked')].map(x=>x.value);if(choices.length!==2){message('업그레이드 기능 2개를 골라주세요!');return}$('prompt4').textContent=`① 지금 게임은 그대로 두고, ${choices[0]}을 추가해줘. 다른 기능은 바꾸지 마.\n\n(추가 후 플레이해서 확인!)\n\n② 지금 게임은 그대로 두고, ${choices[1]}을 추가해줘. 다른 기능은 바꾸지 마.`;message('업그레이드 문장을 만들었어요!')};document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{const text=$(b.dataset.copy).textContent;try{await navigator.clipboard.writeText(text);message('복사했어요! AI에 붙여넣기 해요.')}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');message('복사했어요!')}catch(ex){message('문장을 길게 눌러 복사해주세요.')}ta.remove()}});
+
+// PNG export: draw directly onto Canvas (no SVG/foreignObject, no external library).
+function getExportFields(targetId){
+ const root=$(targetId);
+ return Array.from(root.querySelectorAll('.field')).map(el=>{
+   const label=el.querySelector('label')?.textContent.trim()||'항목';
+   const input=el.querySelector('input,textarea,select');
+   let value='';
+   if(input){
+     if(input.tagName==='SELECT') value=input.options[input.selectedIndex]?.text||'';
+     else value=input.value||'';
+   }
+   return {label, value:value.trim()||'미작성'};
+ });
+}
+function wrapCanvasText(ctx,text,maxWidth){
+ const result=[];
+ for(const paragraph of String(text).split(/\r?\n/)){
+   let line='';
+   for(const char of paragraph){
+     if(line&&ctx.measureText(line+char).width>maxWidth){result.push(line);line=char;}
+     else line+=char;
+   }
+   result.push(line||' ');
+ }
+ return result;
+}
+function drawRounded(ctx,x,y,w,h,r,fill,stroke){
+ ctx.beginPath();
+ if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);
+ else {ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);}
+ ctx.closePath();
+ if(fill){ctx.fillStyle=fill;ctx.fill();}
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}
+}
+function downloadCanvas(canvas,filename){
+ // Data URL is generated from a self-contained bitmap, without foreign image resources.
+ const url=canvas.toDataURL('image/png');
+ if(!url.startsWith('data:image/png'))throw Error('PNG encoding failed');
+ const a=document.createElement('a');
+ a.href=url;
+ a.download=filename;
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+}
+function exportSectionAsPNG(targetId,filename){
+ const root=$(targetId);
+ if(!root){message('저장할 활동지를 찾지 못했어요.');return;}
+ try{
+   const titles={sheet1:'게임 구조 탐정 카드',sheet2:'나의 게임 기획 카드',sheet3:'나의 게임 설계도',sheet4:'친구 게임 피드백 카드'};
+   const lesson={sheet1:'LESSON 01',sheet2:'LESSON 02',sheet3:'LESSON 03',sheet4:'LESSON 04'};
+   const fields=getExportFields(targetId);
+   const W=1080, pad=54, gap=22, colW=(W-pad*2-gap)/2;
+   const canvas=document.createElement('canvas');
+   canvas.width=W*2;
+   let ctx=canvas.getContext('2d');
+   if(!ctx)throw Error('Canvas unavailable');
+   ctx.scale(2,2);
+   ctx.font="24px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+   const blocks=fields.map(f=>{
+      const lines=wrapCanvasText(ctx,f.value,colW-48);
+      return {...f,lines,h:Math.max(132,78+lines.length*35)};
+   });
+   const rows=[];
+   for(let i=0;i<blocks.length;i+=2)rows.push(blocks.slice(i,i+2));
+   const H=230+rows.reduce((sum,row)=>sum+Math.max(...row.map(b=>b.h))+gap,0)+80;
+   canvas.height=H*2;
+   ctx=canvas.getContext('2d');ctx.scale(2,2);
+   ctx.fillStyle='#f6f8fe';ctx.fillRect(0,0,W,H);
+   drawRounded(ctx,28,26,W-56,H-52,28,'#ffffff','#e4eaf4');
+   drawRounded(ctx,pad,54,147,36,18,'#eaf0ff');
+   ctx.textBaseline='middle';
+   ctx.font="bold 17px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+   ctx.fillStyle='#5478e8';ctx.fillText(lesson[targetId]||'LESSON',pad+17,72);
+   ctx.fillStyle='#233354';
+   ctx.font="bold 39px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+   ctx.fillText(titles[targetId]||'나의 활동지',pad,137);
+   ctx.fillStyle='#738199';ctx.font="19px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+   ctx.fillText('게임 크리에이터 코딩  ·  내가 완성한 활동지',pad,180);
+   let y=222;
+   rows.forEach(row=>{
+     const rowH=Math.max(...row.map(b=>b.h));
+     row.forEach((b,index)=>{
+       const x=pad+index*(colW+gap);
+       drawRounded(ctx,x,y,colW,rowH,18,'#fbfcff','#dfe7f3');
+       ctx.textBaseline='top';
+       ctx.font="bold 21px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+       ctx.fillStyle='#425a91';ctx.fillText(b.label,x+23,y+20);
+       ctx.font="24px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+       ctx.fillStyle=b.value==='미작성'?'#99a5b8':'#25314b';
+       b.lines.forEach((line,i)=>ctx.fillText(line,x+23,y+62+i*35));
+     });
+     y+=rowH+gap;
+   });
+   ctx.textBaseline='middle';
+   ctx.font="16px 'Malgun Gothic','Apple SD Gothic Neo',sans-serif";
+   ctx.fillStyle='#8997ad';ctx.fillText('MY GAME · MY IDEA',pad,H-63);
+   downloadCanvas(canvas,filename);
+   message('PNG 파일이 다운로드되었어요!');
+ }catch(error){
+   console.error('PNG export error:',error);
+   message('다운로드하지 못했어요. 크롬이나 엣지에서 다시 시도해 주세요.');
+ }
+}
+document.querySelectorAll('.save-btn').forEach(btn=>btn.addEventListener('click',()=>exportSectionAsPNG(btn.dataset.exportTarget,btn.dataset.exportName||'activity.png')));
+
+let playing=false,frame=null,heroX=.5,rockX=.5,rockY=-.15,score=0,last=0;const game=$('game');function draw(){ $('hero').style.left=`calc(${heroX*100}% - 17px)`;$('rock').style.left=`calc(${rockX*100}% - 15px)`;$('rock').style.top=`${rockY*100}%`;$('score').textContent=score}function restart(){cancelAnimationFrame(frame);score=0;heroX=.5;rockY=-.15;rockX=.1+Math.random()*.8;playing=true;last=0;$('gamehint').style.display='none';$('status').textContent='피해라!';draw();frame=requestAnimationFrame(tick)}function tick(t){if(!playing)return;const dt=Math.min((t-last)/1000||0,.05);last=t;rockY+=dt*(.38+Math.min(score*.02,.4));if(rockY>.91&&rockY<1.08&&Math.abs(rockX-heroX)<.095){playing=false;$('status').textContent='게임 오버!';$('gamehint').innerHTML=`앗! 부딪혔어요!<br>최종 점수 ${score}점<br>다시 도전해 봐요!`;$('gamehint').style.display='grid';return}if(rockY>1.1){rockY=-.15;rockX=.1+Math.random()*.8;score++}draw();frame=requestAnimationFrame(tick)}function move(dx){if(!playing)return;heroX=Math.max(.07,Math.min(.93,heroX+dx));draw()}$('startGame').onclick=restart;$('left').onclick=()=>move(-.14);$('right').onclick=()=>move(.14);document.addEventListener('keydown',e=>{if(current!==1||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();move(e.key==='ArrowLeft'?-.09:.09)}});game.addEventListener('pointerdown',e=>{if(!playing)return;const r=game.getBoundingClientRect();heroX=Math.max(.07,Math.min(.93,(e.clientX-r.left)/r.width));draw()});tab(1)})();
+</script></body></html>
